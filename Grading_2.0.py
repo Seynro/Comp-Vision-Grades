@@ -1,5 +1,5 @@
-image_path = r'C:\Users\user\Desktop\Programs\Python\test_grading_computer_vision\images_name_surname\photo_test_crop_full_2.jpg'
-output_path = r'C:\Users\user\Desktop\Programs\Python\test_grading_computer_vision\images_name_surname\photo_test_crop_full_2_RESULT.jpg'
+image_path = r'C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\photo_test_crop_full_2.jpg'
+output_path = r'C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\photo_test_crop_full_2_RESULT.jpg'
 
 import cv2
 import numpy as np
