@@ -96,8 +96,8 @@ class TestGrader:
         self.grade_test()
 
 
-# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2_ans.jpg"
-# output_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2_RESULT.png"
+# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2.jpg"
+# output_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2_RESULT_test.png"
 # # Usage:
 # grader = TestGrader(image_path, output_path)
 # grader()
