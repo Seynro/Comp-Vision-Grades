@@ -2,11 +2,26 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+import os
+
 class TypeIdentifier:
 
-    def __init__(self, image_path):
+    def __init__(self, image_path, reference_digits_dir="digits"):
         self.image_path = image_path
         self.image = cv2.imread(self.image_path)
+        self.digit_images = self.load_reference_digits(reference_digits_dir)
+
+    def load_reference_digits(self, dir_path):
+        digit_images = {}
+        for filename in os.listdir(dir_path):
+            if filename.endswith(".png"):
+                digit = int(filename.split("_")[1].split(".")[0])  # extracting the number from the filename
+                image_path = os.path.join(dir_path, filename)
+                digit_images[digit] = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+        return digit_images
 
     def detect_circles(self, image):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -29,30 +44,6 @@ class TypeIdentifier:
         offset = int(r * 0.5)
         digit_img = image[y-r-offset:y+r+offset, x-r-offset:x+r+offset]
         return cv2.cvtColor(digit_img, cv2.COLOR_BGR2GRAY)
-
-    def recognize_digit_advanced(self, digit_image):
-        contours, _ = cv2.findContours(digit_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        if not contours:
-            return None
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)
-        x, y, w, h = cv2.boundingRect(contours[0])
-        if w > digit_image.shape[1] * 0.6:
-            return 11
-        else:
-            return self.recognize_digit(digit_image)
-
-    def recognize_digit(self, digit_image):
-        contours, _ = cv2.findContours(digit_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        if not contours:
-            return None
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)
-        x, y, w, h = cv2.boundingRect(contours[0])
-        aspect_ratio = w / h
-        if aspect_ratio > 0.8:
-            return 1
-        elif aspect_ratio < 0.5:
-            return 3
-        return None
 
     def find_nearest_left_circle_advanced(self, circles, filled_circle):
         sorted_circles = sorted(circles, key=lambda c: c[1])
@@ -82,6 +73,21 @@ class TypeIdentifier:
         plt.axis('off')
         plt.show()
 
+    def match_template(self, image, template):
+        match_result = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
+        _, match_value, _, _ = cv2.minMaxLoc(match_result)
+        return match_value
+
+    def recognize_digit_using_templates(self, digit_image):
+        best_match_value = -1
+        recognized_digit = None
+        for digit, template in self.digit_images.items():
+            current_match_value = self.match_template(digit_image, template)
+            if current_match_value > best_match_value:
+                best_match_value = current_match_value
+                recognized_digit = digit
+        return recognized_digit
+
     def __call__(self):
         cropped_image = self.image[int(self.image.shape[0]*0.87):, :]
         detected_circles = self.detect_circles(cropped_image)
@@ -95,17 +101,13 @@ class TypeIdentifier:
                 if current_mean < min_mean_value:
                     min_mean_value = current_mean
                     filled_circle = circle
-            
             # Visualizing the filled circle
             self.visualize_circles(cropped_image, circles, filled_circle)
-            
         nearest_left_circle_advanced = self.find_nearest_left_circle_advanced(circles, filled_circle)
-        
         # Visualizing the nearest left circle
         self.visualize_circles(cropped_image, circles, nearest_left_circle_advanced)
-        
         nearest_digit_image_advanced = self.get_digit_from_circle(nearest_left_circle_advanced, cropped_image)
-        nearest_digit_advanced_method = self.recognize_digit_advanced(nearest_digit_image_advanced)
+        nearest_digit_advanced_method = self.recognize_digit_using_templates(nearest_digit_image_advanced)
         if nearest_digit_advanced_method is not None:
             student_selected_option_advanced_method = nearest_digit_advanced_method + 1
         else:
@@ -113,8 +115,12 @@ class TypeIdentifier:
         return student_selected_option_advanced_method
 
 
-# Test the TypeIdentifier class
+
+# Путь к изображению теста
 image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_7.jpg"
+
+# Создание экземпляра класса и запуск распознавания
 type_identifier = TypeIdentifier(image_path)
 selected_option = type_identifier()
+
 print(f"The selected type by the student is: {selected_option}")
