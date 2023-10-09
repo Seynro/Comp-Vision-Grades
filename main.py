@@ -1,6 +1,6 @@
 # from scaling_image import SquareDetector, ImageSplitter
 from Grading_2_1 import TestGrader
-from type_recog import TypeIdentifier
+from type_recognition_3_0 import TypeIdentifier
 from split_image_1_2 import ImageSplitter
 import cv2
 import numpy as np
@@ -39,8 +39,8 @@ class Grading:
     def __call__(self):
         
         type_identifier = TypeIdentifier(image_path)
-        type_identifier()
-
+        selected_option = type_identifier()
+        print(f"The selected type by the student is: {selected_option}")
         
         splitter = ImageSplitter(self.image_path, self.save_path)
         splitter()
@@ -67,8 +67,8 @@ class Grading:
         self.combine_images(top_image, middle_image, bottom_image, save_result)
 
 
-image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_6.jpg"
-save_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_6"
+image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_9.jpg"
+save_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_9"
 
 obj = Grading(image_path, save_path)
 obj()

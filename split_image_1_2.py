@@ -69,7 +69,7 @@ class ImageSplitter:
         plt.tight_layout()
         plt.show()
 
-    def __call__(self, top_split=0.15, bottom_split=0.15):
+    def __call__(self, top_split=0.13, bottom_split=0.13):
         top_section, middle_section, bottom_section = self.split_image(top_split, bottom_split)
         self.save_images(top_section, middle_section, bottom_section)
         combined_image = self.combine_images(top_section, middle_section, bottom_section)

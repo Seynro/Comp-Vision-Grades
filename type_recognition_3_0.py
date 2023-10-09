@@ -61,17 +61,25 @@ class TypeIdentifier:
         nearest_left_circle = min(left_circles, key=lambda c: filled_circle[0] - c[0])
         return nearest_left_circle
 
-    def visualize_circles(self, image, circles, highlight_circle=None):
+    def visualize_circles(self, image, circles, highlight_circle=None, mode=False, save_path="output.jpg"):
         output = image.copy()
         for circle in circles:
             x, y, r = circle
             cv2.circle(output, (x, y), r, (0, 255, 0), 4)
             if np.array_equal(circle, highlight_circle):
                 cv2.circle(output, (x, y), r, (0, 0, 255), 4)
-        plt.figure(figsize=(10, 10))
-        plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
-        plt.axis('off')
-        plt.show()
+        if mode:
+            save_path = self.image_path.replace('.jpg', '_TYPE_RESULT.jpg')
+            cv2.imwrite(save_path, output)
+            plt.figure(figsize=(10, 10))
+            plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
+            plt.axis('off')
+            plt.show()
+        else:
+            plt.figure(figsize=(10, 10))
+            plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
+            plt.axis('off')
+            plt.show()
 
     def match_template(self, image, template):
         match_result = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
@@ -102,7 +110,7 @@ class TypeIdentifier:
                     min_mean_value = current_mean
                     filled_circle = circle
             # Visualizing the filled circle
-            self.visualize_circles(cropped_image, circles, filled_circle)
+            self.visualize_circles(cropped_image, circles, filled_circle, mode=True)
         nearest_left_circle_advanced = self.find_nearest_left_circle_advanced(circles, filled_circle)
         # Visualizing the nearest left circle
         self.visualize_circles(cropped_image, circles, nearest_left_circle_advanced)
@@ -116,11 +124,11 @@ class TypeIdentifier:
 
 
 
-# Путь к изображению теста
-image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_7.jpg"
+# # Путь к изображению теста
+# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_7.jpg"
 
-# Создание экземпляра класса и запуск распознавания
-type_identifier = TypeIdentifier(image_path)
-selected_option = type_identifier()
+# # Создание экземпляра класса и запуск распознавания
+# type_identifier = TypeIdentifier(image_path)
+# selected_option = type_identifier()
 
-print(f"The selected type by the student is: {selected_option}")
+# print(f"The selected type by the student is: {selected_option}")
