@@ -55,7 +55,8 @@ class Grading:
 
         answer_key = self.answer_key[selected_option]
         grader = TestGrader(image_path_ans, output_path, answer_key)
-        grader()
+        test_grader = grader()
+        print(f'Scored Test: {test_grader}%')
 
         # Загрузим три изображения
         top_image = cv2.imread(self.image_path.replace(".jpg", "_top.jpg"))
@@ -67,6 +68,10 @@ class Grading:
 
         # Вызовем функцию для объединения и сохранения
         self.combine_images(top_image, middle_image, bottom_image, save_result)
+
+        result_dict = {selected_option: test_grader}
+
+        return result_dict
 
 answers = {1:
             {0: 0,  1: 1,  2: 1,  3: 1,  4: 2,
@@ -116,8 +121,12 @@ answers = {1:
         }
 
 
-image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_4.jpg"
-save_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_4"
+final_results = {}
 
-obj = Grading(image_path, save_path, answers)
-obj()
+for i in range(1, 3):
+    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}.jpg"
+    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}"
+    obj = Grading(image_path, save_path, answers)
+    final_results = final_results | obj()
+
+print(final_results)

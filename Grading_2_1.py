@@ -83,8 +83,11 @@ class TestGrader:
         plt.title(f"Scored Test: {score_percentage:.2f}% Correct")
         plt.show()
 
+        return score_percentage
+
     def __call__(self):
-        self.grade_test()
+        
+        return self.grade_test()
 
 
 # image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2.jpg"
