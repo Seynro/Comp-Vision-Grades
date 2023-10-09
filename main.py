@@ -9,9 +9,10 @@ from matplotlib import pyplot as plt
 
 class Grading:
 
-    def __init__(self,image_path: str, save_path: str):
+    def __init__(self,image_path: str, save_path: str, answer_key):
         self.image_path = image_path
         self.save_path = save_path
+        self.answer_key = answer_key
     
 
     def combine_images(self, top_image, middle_image, bottom_image, save_result):
@@ -52,7 +53,8 @@ class Grading:
             image_path_ans = self.image_path.replace(".jpg", f"_middle.jpg")
             output_path = self.image_path.replace(".jpg", f"_RESULT.jpg")
 
-        grader = TestGrader(image_path_ans, output_path)
+        answer_key = self.answer_key[selected_option]
+        grader = TestGrader(image_path_ans, output_path, answer_key)
         grader()
 
         # Загрузим три изображения
@@ -66,9 +68,56 @@ class Grading:
         # Вызовем функцию для объединения и сохранения
         self.combine_images(top_image, middle_image, bottom_image, save_result)
 
+answers = {1:
+            {0: 0,  1: 1,  2: 1,  3: 1,  4: 2,
+            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
+            
+            29:{0: 1,  1: 1,  2: 1,  3: 1,  4: 2,
+            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
 
-image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_9.jpg"
-save_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_9"
+            7:{0: 2,  1: 1,  2: 1,  3: 1,  4: 2,
+            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
 
-obj = Grading(image_path, save_path)
+            40:{0: 3,  1: 1,  2: 1,  3: 1,  4: 2,
+            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
+
+            21:{0: 0,  1: 2,  2: 1,  3: 1,  4: 2,
+            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+            35: 2, 36: 3, 37: 3, 38: 3, 39: 1}
+        }
+
+
+image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_4.jpg"
+save_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_4"
+
+obj = Grading(image_path, save_path, answers)
 obj()

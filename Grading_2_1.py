@@ -4,7 +4,8 @@ from matplotlib import pyplot as plt
 
 class TestGrader:
 
-    def __init__(self, image_path, output_path):
+    def __init__(self, image_path, output_path, answer_key):
+        self.answer_key = answer_key
         self.image_path = image_path
         self.output_path = output_path
         self.image = cv2.imread(self.image_path)
@@ -67,19 +68,9 @@ class TestGrader:
         bubble_cnts = [c for c in cnts if self.is_circle(c)]
         bubble_cnts = self.filter_by_mean_size(bubble_cnts)
 
-        DEMO_ANSWER_KEY = {
-            0: 1,  1: 1,  2: 1,  3: 1,  4: 2,
-            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
-            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
-            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
-            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
-            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
-            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
-            35: 2, 36: 3, 37: 3, 38: 3, 39: 1
-        }
 
         sorted_bubble_cnts = self.sort_bubbles(bubble_cnts)
-        correct = self.score_test(sorted_bubble_cnts, thresh, DEMO_ANSWER_KEY)
+        correct = self.score_test(sorted_bubble_cnts, thresh, self.answer_key)
         score_percentage = (correct / 40.0) * 100
 
         # Save the processed image

@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-
-import cv2
-import numpy as np
-from matplotlib import pyplot as plt
 import os
 
 class TypeIdentifier:
@@ -111,15 +107,20 @@ class TypeIdentifier:
                     filled_circle = circle
             # Visualizing the filled circle
             self.visualize_circles(cropped_image, circles, filled_circle, mode=True)
-        nearest_left_circle_advanced = self.find_nearest_left_circle_advanced(circles, filled_circle)
-        # Visualizing the nearest left circle
-        self.visualize_circles(cropped_image, circles, nearest_left_circle_advanced)
-        nearest_digit_image_advanced = self.get_digit_from_circle(nearest_left_circle_advanced, cropped_image)
-        nearest_digit_advanced_method = self.recognize_digit_using_templates(nearest_digit_image_advanced)
-        if nearest_digit_advanced_method is not None:
+        try:
+            nearest_left_circle_advanced = self.find_nearest_left_circle_advanced(circles, filled_circle)
+            nearest_digit_image_advanced = self.get_digit_from_circle(nearest_left_circle_advanced, cropped_image)
+            nearest_digit_advanced_method = self.recognize_digit_using_templates(nearest_digit_image_advanced)
             student_selected_option_advanced_method = nearest_digit_advanced_method + 1
-        else:
-            student_selected_option_advanced_method = None
+        except TypeError:
+            sorted_circles = sorted(circles, key=lambda c: c[1])
+            y_diffs = [sorted_circles[i+1][1] - sorted_circles[i][1] for i in range(len(sorted_circles)-1)]
+            max_diff_index = y_diffs.index(max(y_diffs))
+            threshold_y = (sorted_circles[max_diff_index][1] + sorted_circles[max_diff_index + 1][1]) / 2
+            if filled_circle[1] < threshold_y:
+                student_selected_option_advanced_method = 1
+            else:
+                student_selected_option_advanced_method = 21
         return student_selected_option_advanced_method
 
 
