@@ -5,6 +5,7 @@ from split_image_1_2 import ImageSplitter
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+from perc_show import put_percent
 
 
 class Grading:
@@ -39,7 +40,7 @@ class Grading:
 
     def __call__(self):
         
-        type_identifier = TypeIdentifier(image_path)
+        type_identifier = TypeIdentifier(self.image_path)
         selected_option = type_identifier()
         print(f"The selected type by the student is: {selected_option}")
         
@@ -70,6 +71,8 @@ class Grading:
         self.combine_images(top_image, middle_image, bottom_image, save_result)
 
         result_dict = {selected_option: test_grader}
+
+        put_percent(save_result, test_grader)
 
         return result_dict
 
@@ -123,7 +126,7 @@ answers = {1:
 
 final_results = {}
 
-for i in range(1, 3):
+for i in range(1, 6):
     image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}.jpg"
     save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}"
     obj = Grading(image_path, save_path, answers)
