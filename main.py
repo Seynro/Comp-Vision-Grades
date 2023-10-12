@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 from perc_show import put_percent
+from converter import PDF_JPG_converter
 
 
 class Grading:
@@ -40,6 +41,8 @@ class Grading:
 
     def __call__(self):
         
+        # PDF_JPG_converter(self.image_path)
+
         type_identifier = TypeIdentifier(self.image_path)
         selected_option = type_identifier()
         print(f"The selected type by the student is: {selected_option}")
