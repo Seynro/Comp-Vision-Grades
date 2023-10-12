@@ -41,7 +41,7 @@ class Grading:
 
     def __call__(self):
         
-        # PDF_JPG_converter(self.image_path)
+        PDF_JPG_converter(self.image_path)
 
         type_identifier = TypeIdentifier(self.image_path)
         selected_option = type_identifier()
@@ -130,8 +130,10 @@ answers = {1:
 final_results = {}
 
 for i in range(1, 6):
-    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}.jpg"
-    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}"
+    # image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}.jpg"
+    # save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}"
+    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file ({i}).jpg"
+    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file ({i})"
     obj = Grading(image_path, save_path, answers)
     final_results = final_results | obj()
 
