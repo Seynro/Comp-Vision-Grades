@@ -126,26 +126,26 @@ class Grading:
 #             35: 2, 36: 3, 37: 3, 38: 3, 39: 1}
 #         }
 
-import pickle
+# import pickle
 
-with open('dictionary', 'rb') as f:
-    answers = pickle.load(f)
+# with open('dictionary', 'rb') as f:
+#     answers = pickle.load(f)
 
 
-final_results = {}
+# final_results = {}
 
-# PDF_JPG_converter(fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1).jpg")
+# # PDF_JPG_converter(fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1).jpg")
 
-for i in range(1, 10):
-    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-000{i}.jpg"
-    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-000{i}"
-    obj = Grading(image_path, save_path, answers)
-    final_results = final_results | obj()
+# for i in range(1, 10):
+#     image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-000{i}.jpg"
+#     save_path = image_path.replace(".jpg","")
+#     obj = Grading(image_path, save_path, answers)
+#     final_results = final_results | obj()
 
-for i in range(10, 23):
-    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-00{i}.jpg"
-    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-00{i}"
-    obj = Grading(image_path, save_path, answers)
-    final_results = final_results | obj()
+# for i in range(10, 23):
+#     image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-00{i}.jpg"
+#     save_path = image_path.replace(".jpg","")
+#     obj = Grading(image_path, save_path, answers)
+#     final_results = final_results | obj()
 
-print(final_results)
+# print(final_results)
