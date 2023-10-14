@@ -2,15 +2,21 @@ import tkinter
 import customtkinter
 from main import Grading
 import pickle
-
-
-# Для демонстрации добавлю импорт простого класса. В вашем реальном коде это будет из файла main.py.
-class SampleClass:
-    def __init__(self, var1, var2):
-        print(f"Received variables: {var1}, {var2}")
+import sys
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
+
+class OutputRedirector:
+    def __init__(self, textbox):
+        self.textbox = textbox
+
+    def write(self, string):
+        self.textbox.insert(tkinter.END, string)
+        self.textbox.see(tkinter.END)
+
+    def flush(self):
+        pass
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -27,30 +33,31 @@ class App(customtkinter.CTk):
 
         # Первое поле ввода
         self.input_field_1 = customtkinter.CTkEntry(self, placeholder_text="Image path")
-        self.input_field_1.grid(row=0, column=0, columnspan=2, padx=(40, 40), pady=(40, 40), sticky="nsew")  # Увеличенные padx и pady
+        self.input_field_1.grid(row=0, column=0, columnspan=2, padx=(40, 40), pady=(40, 40), sticky="nsew")
 
         # Второе поле ввода
         self.input_field_2 = customtkinter.CTkEntry(self, placeholder_text="Answers Path")
-        self.input_field_2.grid(row=1, column=0, columnspan=2, padx=(40, 40), pady=(40, 40), sticky="nsew")  # Увеличенные padx и pady
+        self.input_field_2.grid(row=1, column=0, columnspan=2, padx=(40, 40), pady=(40, 40), sticky="nsew")
 
         # Кнопка для отправки данных
         self.submit_button = customtkinter.CTkButton(master=self, text="Submit", command=self.submit_data)
-        self.submit_button.grid(row=2, column=0, padx=40, pady=20, sticky="nsew")  # Увеличенные padx и pady
+        self.submit_button.grid(row=2, column=0, padx=40, pady=20, sticky="nsew")
 
         # Виджет для вывода данных из командной строки
         self.output_textbox = customtkinter.CTkTextbox(self)
         self.output_textbox.grid(row=3, column=0, columnspan=2, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
+        # Перенаправление stdout и stderr в textbox
+        sys.stdout = OutputRedirector(self.output_textbox)
+        sys.stderr = OutputRedirector(self.output_textbox)
 
     # Функция для отправки данных из полей ввода
     def submit_data(self):
         image_path_input = self.input_field_1.get()
         dict_ans = self.input_field_2.get()
 
-#------------------------------------------------------------------------------------------------------
         with open(dict_ans, 'rb') as f:
             answers = pickle.load(f)
-
 
         final_results = {}
 
@@ -59,20 +66,24 @@ class App(customtkinter.CTk):
             save_path = image_path.replace(".jpg","")
             obj = Grading(image_path, save_path, answers)
             final_results = final_results | obj()
-            self.output_textbox.insert(tkinter.END, final_results + "\n")
+            self.output_textbox.insert(tkinter.END, str(final_results) + "\n")
 
         for i in range(10, 23):
             image_path = image_path_input + fr"{i}.jpg"
             save_path = image_path.replace(".jpg","")
             obj = Grading(image_path, save_path, answers)
             final_results = final_results | obj()
-            self.output_textbox.insert(tkinter.END, final_results + "\n")
+            self.output_textbox.insert(tkinter.END, str(final_results) + "\n")
 
+        self.output_textbox.insert(tkinter.END, str(final_results) + "\n")
 
-        self.output_textbox.insert(tkinter.END, final_results + "\n")
-
-
+    def on_closing(self):
+        # Восстановление стандартного вывода при закрытии приложения
+        sys.stdout = sys.__stdout__
+        sys.stderr = sys.__stderr__
+        self.destroy()
 
 if __name__ == "__main__":
     app = App()
+    app.protocol("WM_DELETE_WINDOW", app.on_closing)  # Обработка закрытия окна
     app.mainloop()
