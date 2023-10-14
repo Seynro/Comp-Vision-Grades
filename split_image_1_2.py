@@ -73,7 +73,7 @@ class ImageSplitter:
         top_section, middle_section, bottom_section = self.split_image(top_split, bottom_split)
         self.save_images(top_section, middle_section, bottom_section)
         combined_image = self.combine_images(top_section, middle_section, bottom_section)
-        self.display_images(top_section, middle_section, bottom_section, combined_image)
+        # self.display_images(top_section, middle_section, bottom_section, combined_image)
         self.save_images(top_section, middle_section, bottom_section)
 
 # Usage:

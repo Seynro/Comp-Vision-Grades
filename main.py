@@ -41,7 +41,7 @@ class Grading:
 
     def __call__(self):
         
-        PDF_JPG_converter(self.image_path)
+        
 
         type_identifier = TypeIdentifier(self.image_path)
         selected_option = type_identifier()
@@ -79,61 +79,72 @@ class Grading:
 
         return result_dict
 
-answers = {1:
-            {0: 0,  1: 1,  2: 1,  3: 1,  4: 2,
-            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
-            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
-            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
-            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
-            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
-            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
-            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
+# answers = {1:
+#             {0: 0,  1: 1,  2: 1,  3: 1,  4: 2,
+#             5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+#             10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+#             15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+#             20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+#             25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+#             30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+#             35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
             
-            29:{0: 1,  1: 1,  2: 1,  3: 1,  4: 2,
-            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
-            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
-            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
-            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
-            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
-            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
-            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
+#             29:{0: 1,  1: 1,  2: 1,  3: 1,  4: 2,
+#             5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+#             10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+#             15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+#             20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+#             25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+#             30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+#             35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
 
-            7:{0: 2,  1: 1,  2: 1,  3: 1,  4: 2,
-            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
-            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
-            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
-            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
-            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
-            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
-            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
+#             7:{0: 2,  1: 1,  2: 1,  3: 1,  4: 2,
+#             5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+#             10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+#             15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+#             20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+#             25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+#             30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+#             35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
 
-            40:{0: 3,  1: 1,  2: 1,  3: 1,  4: 2,
-            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
-            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
-            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
-            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
-            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
-            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
-            35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
+#             40:{0: 3,  1: 1,  2: 1,  3: 1,  4: 2,
+#             5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+#             10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+#             15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+#             20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+#             25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+#             30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+#             35: 2, 36: 3, 37: 3, 38: 3, 39: 1},
 
-            21:{0: 0,  1: 2,  2: 1,  3: 1,  4: 2,
-            5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
-            10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
-            15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
-            20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
-            25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
-            30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
-            35: 2, 36: 3, 37: 3, 38: 3, 39: 1}
-        }
+#             21:{0: 0,  1: 2,  2: 1,  3: 1,  4: 2,
+#             5: 2,  6: 3,  7: 3,  8: 1,  9: 1,
+#             10: 2, 11: 3, 12: 1, 13: 3, 14: 2,
+#             15: 2, 16: 3, 17: 3, 18: 2, 19: 1,
+#             20: 2, 21: 2, 22: 1, 23: 3, 24: 2,
+#             25: 2, 26: 3, 27: 3, 28: 3, 29: 1,
+#             30: 2, 31: 3, 32: 1, 33: 3, 34: 2,
+#             35: 2, 36: 3, 37: 3, 38: 3, 39: 1}
+#         }
+
+import pickle
+
+with open('dictionary', 'rb') as f:
+    answers = pickle.load(f)
 
 
 final_results = {}
 
-for i in range(1, 6):
-    # image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}.jpg"
-    # save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\test_{i}"
-    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file ({i}).jpg"
-    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file ({i})"
+# PDF_JPG_converter(fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1).jpg")
+
+for i in range(1, 10):
+    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-000{i}.jpg"
+    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-000{i}"
+    obj = Grading(image_path, save_path, answers)
+    final_results = final_results | obj()
+
+for i in range(10, 23):
+    image_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-00{i}.jpg"
+    save_path = fr"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-00{i}"
     obj = Grading(image_path, save_path, answers)
     final_results = final_results | obj()
 

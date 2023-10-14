@@ -82,15 +82,60 @@ class TypeIdentifier:
         _, match_value, _, _ = cv2.minMaxLoc(match_result)
         return match_value
 
+    def resize_image(self, image, scale_percent):
+        try:
+            # Проверка на наличие изображения и его размеров
+            if image is None or len(image.shape) < 2:
+                print("Ошибка: изображение пустое или имеет неверный формат!")
+                return None
+            
+            width = int(image.shape[1] * scale_percent / 100)
+            height = int(image.shape[0] * scale_percent / 100)
+            
+            # Проверка на допустимые значения масштабирования
+            if width <= 0 or height <= 0:
+                print("Ошибка: недопустимые значения масштабирования!")
+                return None
+            
+            dim = (width, height)
+            resized = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
+            return resized
+
+        except Exception as e:
+            print(f"Ошибка при масштабировании: {e}")
+            return None
+
+
     def recognize_digit_using_templates(self, digit_image):
         best_match_value = -1
         recognized_digit = None
+
+        resized_digit_image = self.resize_image(digit_image, 94)  # Уменьшаем изображение на 5%
+        
+
         for digit, template in self.digit_images.items():
-            current_match_value = self.match_template(digit_image, template)
+            current_match_value = self.match_template(resized_digit_image, template)
             if current_match_value > best_match_value:
                 best_match_value = current_match_value
                 recognized_digit = digit
+                # self.visualize_digit_recognition(digit_image, recognized_digit, best_match_value)
         return recognized_digit
+
+    def visualize_digit_recognition(self, digit_image, best_match_digit, best_match_value):
+        plt.figure(figsize=(10, 5))
+        
+        plt.subplot(1, 2, 1)
+        plt.imshow(digit_image, cmap='gray')
+        plt.title("Extracted Digit")
+        plt.axis('off')
+        
+        plt.subplot(1, 2, 2)
+        plt.imshow(self.digit_images[best_match_digit], cmap='gray')
+        plt.title(f"Best Match (Digit {best_match_digit}, Score: {best_match_value:.2f})")
+        plt.axis('off')
+        
+        plt.show()
+
 
     def __call__(self):
         cropped_image = self.image[int(self.image.shape[0]*0.87):, :]
@@ -107,6 +152,7 @@ class TypeIdentifier:
                     filled_circle = circle
             # Visualizing the filled circle
             self.visualize_circles(cropped_image, circles, filled_circle, mode=True)
+        
         try:
             nearest_left_circle_advanced = self.find_nearest_left_circle_advanced(circles, filled_circle)
             nearest_digit_image_advanced = self.get_digit_from_circle(nearest_left_circle_advanced, cropped_image)
@@ -126,7 +172,7 @@ class TypeIdentifier:
 
 
 # # Путь к изображению теста
-# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\main_test\test_7.jpg"
+# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-0018.jpg"
 
 # # Создание экземпляра класса и запуск распознавания
 # type_identifier = TypeIdentifier(image_path)

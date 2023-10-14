@@ -71,7 +71,7 @@ class TestGrader:
 
         sorted_bubble_cnts = self.sort_bubbles(bubble_cnts)
         correct = self.score_test(sorted_bubble_cnts, thresh, self.answer_key)
-        score_percentage = (correct / 40.0) * 100
+        score_percentage = (correct / 4.0) * 100
 
         # Save the processed image
         cv2.imwrite(self.output_path, self.image)

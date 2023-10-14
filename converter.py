@@ -8,7 +8,7 @@ def PDF_JPG_converter(image_path):
     
     images = convert_from_path(pdf_name, 300, poppler_path = r"C:\Users\user\Desktop\poppler-23.08.0\Library\bin")
     
-    for i in range(len(images)):
+    for i in range(1,len(images)):
 
 	    # Save pages as images in the pdf
-	    images[i].save(image_path, 'JPEG')
+	    images[i].save(image_path.replace("(1).jpg", f"({i}).jpg"), 'JPEG')
