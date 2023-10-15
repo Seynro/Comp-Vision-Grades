@@ -4,8 +4,9 @@ from matplotlib import pyplot as plt
 
 class TestGrader:
 
-    def __init__(self, image_path, output_path, answer_key):
+    def __init__(self, image_path, output_path, answer_key, n_questions):
         self.answer_key = answer_key
+        self.n_questions = n_questions
         self.image_path = image_path
         self.output_path = output_path
         self.image = cv2.imread(self.image_path)
@@ -71,7 +72,7 @@ class TestGrader:
 
         sorted_bubble_cnts = self.sort_bubbles(bubble_cnts)
         correct = self.score_test(sorted_bubble_cnts, thresh, self.answer_key)
-        score_percentage = (correct / 4.0) * 100
+        score_percentage = (correct / self.n_questions) * 100
 
         # Save the processed image
         cv2.imwrite(self.output_path, self.image)

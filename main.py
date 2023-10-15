@@ -11,10 +11,11 @@ from converter import PDF_JPG_converter
 
 class Grading:
 
-    def __init__(self,image_path: str, save_path: str, answer_key):
+    def __init__(self,image_path: str, save_path: str, answer_key, n_questions):
         self.image_path = image_path
         self.save_path = save_path
         self.answer_key = answer_key
+        self.n_questions = n_questions
     
 
     def combine_images(self, top_image, middle_image, bottom_image, save_result):
@@ -58,7 +59,7 @@ class Grading:
             output_path = self.image_path.replace(".jpg", f"_RESULT.jpg")
 
         answer_key = self.answer_key[selected_option]
-        grader = TestGrader(image_path_ans, output_path, answer_key)
+        grader = TestGrader(image_path_ans, output_path, answer_key, self.n_questions)
         test_grader = grader()
         print(f'Scored Test: {test_grader}%')
 
