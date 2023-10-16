@@ -76,7 +76,7 @@ class Grading:
 
         result_dict = {selected_option: test_grader}
 
-        put_percent(save_result, test_grader)
+        put_percent(save_result, test_grader, selected_option)
 
         return result_dict
 

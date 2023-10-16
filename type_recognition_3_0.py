@@ -67,15 +67,16 @@ class TypeIdentifier:
         if mode:
             save_path = self.image_path.replace('.jpg', '_TYPE_RESULT.jpg')
             cv2.imwrite(save_path, output)
-            plt.figure(figsize=(10, 10))
-            plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
-            plt.axis('off')
-            plt.show()
+            # plt.figure(figsize=(10, 10))
+            # plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
+            # plt.axis('off')
+            # # plt.show()
         else:
-            plt.figure(figsize=(10, 10))
-            plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
-            plt.axis('off')
-            plt.show()
+            pass
+            # plt.figure(figsize=(10, 10))
+            # plt.imshow(cv2.cvtColor(output, cv2.COLOR_BGR2RGB))
+            # plt.axis('off')
+            # # plt.show()
 
     def match_template(self, image, template):
         match_result = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
@@ -134,7 +135,7 @@ class TypeIdentifier:
         plt.title(f"Best Match (Digit {best_match_digit}, Score: {best_match_value:.2f})")
         plt.axis('off')
         
-        plt.show()
+        # plt.show()
 
 
     def __call__(self):

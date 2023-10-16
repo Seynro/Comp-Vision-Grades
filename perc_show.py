@@ -1,12 +1,12 @@
 from PIL import Image, ImageDraw, ImageFont
 
-def put_percent(image_path, percentage):
+def put_percent(image_path, percentage, type_num):
     # Открыть изображение
     img = Image.open(image_path)
 
     # Добавление текста в центр картинки
     draw = ImageDraw.Draw(img)
-    text = str(percentage)
+    text = str(percentage) + "%, " + str(type_num)
 
     # Выбор шрифта и размера
     font_path = fr"font\DejaVuSans-Bold.ttf"

@@ -78,11 +78,11 @@ class TestGrader:
         cv2.imwrite(self.output_path, self.image)
 
         # Display the scored test
-        plt.figure(figsize=(10, 10))
-        plt.imshow(cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
-        plt.axis('off')
-        plt.title(f"Scored Test: {score_percentage:.2f}% Correct")
-        plt.show()
+        # plt.figure(figsize=(10, 10))
+        # plt.imshow(cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
+        # plt.axis('off')
+        # plt.title(f"Scored Test: {score_percentage:.2f}% Correct")
+        # plt.show()
 
         return score_percentage
 
