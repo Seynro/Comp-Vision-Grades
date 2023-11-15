@@ -74,9 +74,9 @@ class Grading:
         # Вызовем функцию для объединения и сохранения
         self.combine_images(top_image, middle_image, bottom_image, save_result)
 
-        st_id = numbers_recognition(top_image)
+        st_id = numbers_recognition(self.image_path.replace(".jpg", "_top.jpg"))
 
-        result_dict = {selected_option: test_grader}
+        result_dict = {(st_id, selected_option): test_grader}
 
         put_percent(save_result, test_grader, selected_option)
 

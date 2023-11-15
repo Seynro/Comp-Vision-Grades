@@ -5,11 +5,12 @@ model = ocr_predictor(pretrained=True)
 
 def numbers_recognition(image_path):
     # Load the document
+    print(image_path)
     doc = DocumentFile.from_images(image_path)
     # Analyze
     result = model(doc)
 
-    result.show(doc)
+    # result.show(doc)
     
     json_output = result.export()
 
@@ -27,5 +28,6 @@ def numbers_recognition(image_path):
 
     # Объединяем слова в одну строку
     result_string = ' '.join(words_after_st)
+    
+    return str(result_string)
 
-    return result_string
