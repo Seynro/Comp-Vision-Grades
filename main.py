@@ -6,8 +6,8 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 from perc_show import put_percent
-from converter import PDF_JPG_converter
-
+# from converter import PDF_JPG_converter
+from dig_rec import numbers_recognition
 
 class Grading:
 
@@ -73,6 +73,8 @@ class Grading:
 
         # Вызовем функцию для объединения и сохранения
         self.combine_images(top_image, middle_image, bottom_image, save_result)
+
+        st_id = numbers_recognition(top_image)
 
         result_dict = {selected_option: test_grader}
 
