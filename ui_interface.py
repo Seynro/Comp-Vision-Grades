@@ -6,6 +6,7 @@ import sys
 from excel_results import StudentGrades
 import threading
 from tkinter import ttk
+from doc_creating import Test_blank
 
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue")
@@ -89,9 +90,25 @@ class App(customtkinter.CTk):
         self.progress_bar.grid()
         self.progress_bar.set(0)  # Начать с нуля
         self.progress_bar.start()  # Запустить анимацию прогресс бара
-        
+
         # Запуск длительной операции в отдельном потоке
-        threading.Thread(target=self.process_data, daemon=True).start()
+        threading.Thread(target=self.create_tests, daemon=True).start()
+
+    def create_tests(self):
+        try:
+            dict_stud = self.input_field_2_2.get()
+
+            with open(dict_stud, 'rb') as f:
+                    students = pickle.load(f)
+            
+            blank = Test_blank(students)
+            blank()
+        finally:
+            self.progress_bar.stop()
+            self.progress_bar.set(100)  # Установить прогресс бар в конечное положение
+            self.progress_bar.grid_remove()  # Скрыть прогресс бар
+            # Возвращаем кнопку в обычное состояние в главном потоке
+            self.after(0, lambda: self.generate_button.configure(state='normal'))
 
     # Функция для отправки данных из полей ввода
     def submit_data(self):
