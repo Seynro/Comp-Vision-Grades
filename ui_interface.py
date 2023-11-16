@@ -63,6 +63,10 @@ class App(customtkinter.CTk):
         self.submit_button = customtkinter.CTkButton(master=self, text="Submit", command=self.submit_data)
         self.submit_button.grid(row=4, column=0, padx=40, pady=20, sticky="nsew")
 
+        # Кнопка для генерации Ворд документов
+        self.generate_button = customtkinter.CTkButton(master=self, text="Generate tests", command=self.test_docx)
+        self.generate_button.grid(row=4, column=2, padx=40, pady=20, sticky="nsew")
+
         # Виджет для вывода данных из командной строки
         self.output_textbox = customtkinter.CTkTextbox(self)
         self.output_textbox.grid(row=5, column=0, columnspan=4, padx=(20, 20), pady=(20, 20), sticky="nsew")
@@ -76,6 +80,18 @@ class App(customtkinter.CTk):
         # Разместить прогресс бар справа от кнопки сабмит и сделать его такого же размера
         self.progress_bar.grid(row=4, column=1, padx=10, pady=40, sticky="nsew")
         self.progress_bar.grid_remove()  # Скрыть прогресс бар при запуске
+
+    def test_docx(self):
+        # Отключение кнопки, чтобы избежать повторного нажатия
+        self.generate_button.configure(state='disabled')
+
+        # Запускаем прогресс бар
+        self.progress_bar.grid()
+        self.progress_bar.set(0)  # Начать с нуля
+        self.progress_bar.start()  # Запустить анимацию прогресс бара
+        
+        # Запуск длительной операции в отдельном потоке
+        threading.Thread(target=self.process_data, daemon=True).start()
 
     # Функция для отправки данных из полей ввода
     def submit_data(self):

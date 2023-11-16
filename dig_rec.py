@@ -29,5 +29,10 @@ def numbers_recognition(image_path):
     # Объединяем слова в одну строку
     result_string = ' '.join(words_after_st)
     
-    return str(result_string)
+    # Возвращаем последние 5 символов, если строка больше 5 символов
+    if len(result_string) > 5:
+        return str(result_string[-5:])
+    else:
+        return result_string
 
+# print(numbers_recognition(r'C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\final_test\file (1)_page-0001_top.jpg'))
