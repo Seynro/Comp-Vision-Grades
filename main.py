@@ -46,10 +46,21 @@ class Grading:
 
         type_identifier = TypeIdentifier(self.image_path)
         selected_option = type_identifier()
-        print(f"The selected type by the student is: {selected_option}")
         
         splitter = ImageSplitter(self.image_path, self.save_path)
         splitter()
+
+
+#-------------------------------------------------------------------------------------------------
+
+        upper_type = numbers_recognition(self.image_path.replace(".jpg", "_top.jpg"))
+
+        if upper_type == selected_option:
+            print(f"The selected type by the student is: {selected_option}")
+        else:
+        # или upper или bottom
+            print(f"DOCTR recognized type : {upper_type}")
+#-------------------------------------------------------------------------------------------------
 
         if self.image_path.endswith(".png"):
             image_path_ans = self.image_path.replace(".png", f"_middle.png")
