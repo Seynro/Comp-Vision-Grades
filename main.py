@@ -7,7 +7,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from perc_show import put_percent
 # from converter import PDF_JPG_converter
-from dig_rec import numbers_recognition
+from dig_rec import numbers_recognition, number_after_type
 
 class Grading:
 
@@ -53,9 +53,9 @@ class Grading:
 
 #-------------------------------------------------------------------------------------------------
 
-        upper_type = numbers_recognition(self.image_path.replace(".jpg", "_top.jpg"))
+        upper_type = number_after_type(self.image_path.replace(".jpg", "_top.jpg"))
 
-        if upper_type == selected_option:
+        if upper_type == int(selected_option):
             print(f"The selected type by the student is: {selected_option}")
         else:
         # или upper или bottom
@@ -69,7 +69,7 @@ class Grading:
             image_path_ans = self.image_path.replace(".jpg", f"_middle.jpg")
             output_path = self.image_path.replace(".jpg", f"_RESULT.jpg")
 
-        answer_key = self.answer_key[selected_option]
+        answer_key = self.answer_key[upper_type]
         grader = TestGrader(image_path_ans, output_path, answer_key, self.n_questions)
         test_grader = grader()
         print(f'Scored Test: {test_grader}%')
@@ -87,9 +87,9 @@ class Grading:
 
         st_id = numbers_recognition(self.image_path.replace(".jpg", "_top.jpg"))
 
-        result_dict = {(st_id, selected_option): test_grader}
+        result_dict = {(st_id, upper_type): test_grader}
 
-        put_percent(save_result, test_grader, selected_option)
+        put_percent(save_result, test_grader, upper_type)
 
         return result_dict
 

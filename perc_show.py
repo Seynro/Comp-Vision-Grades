@@ -6,15 +6,15 @@ def put_percent(image_path, percentage, type_num):
 
     # Добавление текста в центр картинки
     draw = ImageDraw.Draw(img)
-    text = str(percentage) + "%, " + str(type_num)
+    text = f"{percentage}%, {type_num}"
 
     # Выбор шрифта и размера
-    font_path = fr"font\DejaVuSans-Bold.ttf"
+    font_path = "font/DejaVuSans-Bold.ttf"  # Убедитесь, что путь к шрифту корректен
     font_size = min(img.size) // 22
     font = ImageFont.truetype(font_path, font_size)
 
     # Вычисление позиции текста в центре картинки
-    text_width, text_height = draw.textsize(text, font=font)
+    text_width, text_height = draw.textbbox((0, 0), text, font=font)[2:]
     text_x = (img.width - text_width) / 2
     text_y = (img.height - text_height) / 2
 
@@ -23,3 +23,6 @@ def put_percent(image_path, percentage, type_num):
 
     # Сохранение или показать результат
     img.save(image_path)
+
+# Пример использования
+# put_percent("path_to_your_image.jpg", 50, "Type1")
