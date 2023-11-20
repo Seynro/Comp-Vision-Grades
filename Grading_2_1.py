@@ -18,7 +18,9 @@ class TestGrader:
         mask = cv2.bitwise_and(thresh_img, thresh_img, mask=mask)
         total = cv2.countNonZero(mask)
         area = cv2.contourArea(c)
-        if total / float(area) >= 0.35:
+        fill_threshold = 0.5
+
+        if total / float(area) >= fill_threshold:
             return True
         return False
 
@@ -35,7 +37,7 @@ class TestGrader:
         if perimeter == 0:
             return False
         circularity = 4 * np.pi * (area / (perimeter * perimeter))
-        return circularity > 0.7
+        return circularity > 0.5
 
     def sort_bubbles(self, bubble_cnts):
         bubble_cnts_left = sorted([c for c in bubble_cnts if cv2.boundingRect(c)[0] < self.image.shape[1] / 2], key=lambda c: cv2.boundingRect(c)[1])
@@ -49,6 +51,21 @@ class TestGrader:
             if len(cnts) != 4:
                 continue
             filled = [self.is_filled(c, thresh) for c in cnts]
+
+#TEST
+#------------------------------------------------------------------------------------
+ # Plotting each question's bubbles
+            # question_img = self.image.copy()
+            # for j, c in enumerate(cnts):
+            #     color = (0, 255, 0) if filled[j] else (0, 0, 255)
+            #     cv2.drawContours(question_img, [c], -1, color, 3)
+            # plt.figure(figsize=(6, 6))
+            # plt.imshow(cv2.cvtColor(question_img, cv2.COLOR_BGR2RGB))
+            # plt.title(f"Question {q+1}")
+            # plt.axis('off')
+            # plt.show()
+#------------------------------------------------------------------------------------
+
             if sum(filled) == 1:
                 filled_index = filled.index(True)
                 correct_index = answer_key[q]
@@ -63,12 +80,69 @@ class TestGrader:
         return correct
 
     def grade_test(self):
+#TEST
+#------------------------------------------------------------------------------------
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
+        # plt.title("Original Image")
+        # plt.axis('off')
+        # plt.show()
+#------------------------------------------------------------------------------------
         blurred = cv2.GaussianBlur(self.gray, (5, 5), 0)
-        thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-        cnts, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        bubble_cnts = [c for c in cnts if self.is_circle(c)]
-        bubble_cnts = self.filter_by_mean_size(bubble_cnts)
 
+#TEST        
+#------------------------------------------------------------------------------------
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(cv2.cvtColor(blurred, cv2.COLOR_GRAY2RGB))
+        # plt.title("Blurred Image")
+        # plt.axis('off')
+        # plt.show()
+#------------------------------------------------------------------------------------
+        thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+
+#TEST
+#------------------------------------------------------------------------------------
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(cv2.cvtColor(thresh, cv2.COLOR_GRAY2RGB))
+        # plt.title("Thresholded Image")
+        # plt.axis('off')
+        # plt.show()
+#------------------------------------------------------------------------------------
+        cnts, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+#TEST
+#------------------------------------------------------------------------------------
+        # contour_img = self.image.copy()
+        # cv2.drawContours(contour_img, cnts, -1, (0, 255, 0), 3)
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(cv2.cvtColor(contour_img, cv2.COLOR_BGR2RGB))
+        # plt.title("Contours Detected")
+        # plt.axis('off')
+        # plt.show()
+#------------------------------------------------------------------------------------
+
+        bubble_cnts = [c for c in cnts if self.is_circle(c)]
+#TEST
+#------------------------------------------------------------------------------------
+        # circle_img = self.image.copy()
+        # cv2.drawContours(circle_img, bubble_cnts, -1, (255, 0, 0), 3)
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(cv2.cvtColor(circle_img, cv2.COLOR_BGR2RGB))
+        # plt.title("Filtered by Circle")
+        # plt.axis('off')
+        # plt.show()
+#------------------------------------------------------------------------------------
+        bubble_cnts = self.filter_by_mean_size(bubble_cnts)
+#TEST
+#------------------------------------------------------------------------------------
+        # size_img = self.image.copy()
+        # cv2.drawContours(size_img, bubble_cnts, -1, (0, 0, 255), 3)
+        # plt.figure(figsize=(6, 6))
+        # plt.imshow(cv2.cvtColor(size_img, cv2.COLOR_BGR2RGB))
+        # plt.title("Filtered by Mean Size")
+        # plt.axis('off')
+        # plt.show()
+#------------------------------------------------------------------------------------
 
         sorted_bubble_cnts = self.sort_bubbles(bubble_cnts)
         correct = self.score_test(sorted_bubble_cnts, thresh, self.answer_key)
@@ -77,13 +151,15 @@ class TestGrader:
         # Save the processed image
         cv2.imwrite(self.output_path, self.image)
 
+#TEST
+#------------------------------------------------------------------------------------
         # Display the scored test
         # plt.figure(figsize=(10, 10))
         # plt.imshow(cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
         # plt.axis('off')
         # plt.title(f"Scored Test: {score_percentage:.2f}% Correct")
         # plt.show()
-
+#------------------------------------------------------------------------------------
         return score_percentage
 
     def __call__(self):
@@ -91,8 +167,14 @@ class TestGrader:
         return self.grade_test()
 
 
-# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2.jpg"
-# output_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\images_name_surname\scan_2_RESULT_test.png"
+
+# import pickle
+# dict_ans = 'bs_stst_questions'
+# image_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\business_stat_test_2\file (10)_file (9)_merged_29_middle.jpg"
+# output_path = r"C:\Users\user\Desktop\Programs\Python\Comp-Vision-Grades\business_stat_test_2\file (10)_file (9)_merged_29_RESULT.jpg"
+# with open(dict_ans, 'rb') as f:
+#     answers = pickle.load(f)
+
 # # Usage:
-# grader = TestGrader(image_path, output_path)
+# grader = TestGrader(image_path, output_path, answers[16], 40)
 # grader()
