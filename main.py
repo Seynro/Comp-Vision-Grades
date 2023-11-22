@@ -6,8 +6,8 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 from perc_show import put_percent
-from converter import PDF_JPG_converter
-
+# from converter import PDF_JPG_converter
+from dig_rec import numbers_recognition, number_after_type
 
 class Grading:
 
@@ -46,10 +46,21 @@ class Grading:
 
         type_identifier = TypeIdentifier(self.image_path)
         selected_option = type_identifier()
-        print(f"The selected type by the student is: {selected_option}")
         
         splitter = ImageSplitter(self.image_path, self.save_path)
         splitter()
+
+
+#-------------------------------------------------------------------------------------------------
+
+        upper_type = number_after_type(self.image_path.replace(".jpg", "_top.jpg"))
+
+        if upper_type == int(selected_option):
+            print(f"The selected type by the student is: {selected_option}")
+        else:
+        # или upper или bottom
+            print(f"DOCTR recognized type : {upper_type}")
+#-------------------------------------------------------------------------------------------------
 
         if self.image_path.endswith(".png"):
             image_path_ans = self.image_path.replace(".png", f"_middle.png")
@@ -58,7 +69,7 @@ class Grading:
             image_path_ans = self.image_path.replace(".jpg", f"_middle.jpg")
             output_path = self.image_path.replace(".jpg", f"_RESULT.jpg")
 
-        answer_key = self.answer_key[selected_option]
+        answer_key = self.answer_key[upper_type]
         grader = TestGrader(image_path_ans, output_path, answer_key, self.n_questions)
         test_grader = grader()
         print(f'Scored Test: {test_grader}%')
@@ -74,9 +85,11 @@ class Grading:
         # Вызовем функцию для объединения и сохранения
         self.combine_images(top_image, middle_image, bottom_image, save_result)
 
-        result_dict = {selected_option: test_grader}
+        st_id = numbers_recognition(self.image_path.replace(".jpg", "_top.jpg"))
 
-        put_percent(save_result, test_grader, selected_option)
+        result_dict = {(st_id, upper_type): test_grader}
+
+        put_percent(save_result, test_grader, upper_type)
 
         return result_dict
 
