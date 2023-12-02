@@ -3,3 +3,5 @@ _pycache_/
 old_versions/
 text_recognition/
 blanks/
+*.ipynb
+*.xlsx
