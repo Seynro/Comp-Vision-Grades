@@ -1,5 +1,7 @@
 # Comp-Vision-Grades
 
+### Programm starts with main_aplication.exe
+
 ## How to use:
 1) Create 2 dictionares:
     1) Students dictionary ```{type: {'Name Surname': Student ID}}```
