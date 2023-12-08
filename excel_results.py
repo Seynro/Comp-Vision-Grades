@@ -27,7 +27,7 @@ class StudentGrades:
 # grades = {(12345, 2): 87, (23456, 4): 93}
 # students = {2: {'John Doe': 54321}, 4: {'Jane Smith': 34256}}
 # report = StudentGrades(grades, students)
-# report.to_excel('example.xlsx')
+# report.to_excel(r'C:\Users\user\Desktop\test\example.xlsx')
 
 
 
