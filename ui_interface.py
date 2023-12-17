@@ -10,6 +10,10 @@ from doc_creating import Test_blank
 from tkinter import Toplevel, Event
 from tkinter import filedialog
 from dictionary_creation import parse_questions, parse_students
+from gmail_sender import email_sender
+import pandas as pd
+import glob
+import os
 
 
 customtkinter.set_appearance_mode("System")
@@ -31,8 +35,9 @@ class App(customtkinter.CTk):
         super().__init__()
 
         # Окно
-        self.title("Input Data")
-        self.geometry(f"{1100}x{580}")
+        self.title("Grader")
+        self.geometry(f"{1200}x{580}")
+
 
         # configure grid layout (4x4)
         # self.grid_columnconfigure(1, weight=1)
@@ -67,7 +72,7 @@ class App(customtkinter.CTk):
         self.input_field_2_2_label = customtkinter.CTkEntry(self, textvariable=self.input_field_2_2, state='disabled', width=160)
         self.input_field_2_2_label.grid(row=1, column=2, columnspan=1, padx=(40,10), pady=(10, 10), sticky="nsew")
         self.input_field_2_2_button = customtkinter.CTkButton(self, text="Students File", command=self.choose_students_dict, width=50)
-        self.input_field_2_2_button.grid(row=1, column=3, columnspan=1, pady=(10, 10), sticky="nsew")
+        self.input_field_2_2_button.grid(row=1, column=3, columnspan=1, padx=(0, 40), pady=(10, 10), sticky="nsew")
 
 
 
@@ -76,15 +81,15 @@ class App(customtkinter.CTk):
 
         # Второе.3 поле ввода
         self.input_field_2_3 = customtkinter.CTkEntry(self, placeholder_text="Excel Name")
-        self.input_field_2_3.grid(row=1, column=4, columnspan=1, padx=(40, 40), pady=(10, 10), sticky="nsew")
+        self.input_field_2_3.grid(row=1, column=4, columnspan=1, padx=(0, 20), pady=(10, 10), sticky="nsew")
 
         # Третье поле ввода
         self.input_field_3 = customtkinter.CTkEntry(self, placeholder_text="Number of students")
-        self.input_field_3.grid(row=2, column=0, columnspan=5, padx=(40, 40), pady=(10, 10), sticky="nsew")
+        self.input_field_3.grid(row=2, column=0, columnspan=4, padx=(40, 40), pady=(10, 10), sticky="nsew")
 
         # Четвёртое поле ввода
         self.input_field_4 = customtkinter.CTkEntry(self, placeholder_text="Number of questions")
-        self.input_field_4.grid(row=3, column=0, columnspan=5, padx=(40, 40), pady=(10, 10), sticky="nsew")
+        self.input_field_4.grid(row=3, column=0, columnspan=4, padx=(40, 40), pady=(10, 10), sticky="nsew")
 
         # Кнопка для отправки данных
         self.submit_button = customtkinter.CTkButton(master=self, text="Submit", command=self.submit_data)
@@ -98,6 +103,17 @@ class App(customtkinter.CTk):
         self.generate_dict_button = customtkinter.CTkButton(master=self, text="Generate test", command=self.generate_dicts)
         self.generate_dict_button.grid(row=4, column=3, padx=40, pady=20, sticky="nsew")
 
+        # Кнопка для отправки mails
+        self.mails_sent_button = customtkinter.CTkButton(master=self, text="Send emails", command=self.sent_mails)
+        self.mails_sent_button.grid(row=4, column=4, padx=(0, 20), pady=20, sticky="nsew")
+        
+        # Ввод темы письма
+        self.email_subject = customtkinter.CTkEntry(self, placeholder_text="Email subject") 
+        self.email_subject.grid(row=2, column=4, columnspan=1, padx=(0, 20), pady=(10, 10), sticky="nsew")
+
+        # Ввод тела письма
+        self.email_body =  customtkinter.CTkEntry(self, placeholder_text="Email body") 
+        self.email_body.grid(row=3, column=4, columnspan=1, padx=(0, 20), pady=(10, 10), sticky="nsew")
 
         # Виджет для вывода данных из командной строки
         self.output_textbox = customtkinter.CTkTextbox(self)
@@ -170,7 +186,46 @@ class App(customtkinter.CTk):
     def generate_dicts(self):
         self.generate_dict_button.configure(state='disabled')
         threading.Thread(target=self.sub_generate_dicts, daemon=True).start()
-        
+
+    def sent_mails(self):
+        self.mails_sent_button.configure(state='disabled')
+        threading.Thread(target=self.sub_sent_mails, daemon=True).start()
+
+    def sub_sent_mails(self):
+        try:
+            dict_stud_path_exel = self.input_field_2_2.get()
+            df = pd.read_excel(dict_stud_path_exel)
+            subject = self.email_subject.get()
+            body = self.email_body.get()
+            for full_name in df['Students']:
+                student_row = df[df['Students'].str.lower() == full_name.lower()]
+                # Возвращение почты, если студент найден
+                if not student_row.empty:
+                    student_mail = student_row['Mails'].values[0]
+                    print(full_name)
+                    print(student_mail)
+                
+                    image_path = self.input_field_1.get()
+                    last_slash_index = image_path.rfind("/")
+                    if last_slash_index != -1:
+                        trimmed_path = image_path[:last_slash_index+1]
+                    else:
+                        trimmed_path = image_path
+                        print('Error: no slash found in path')
+                    file_part = f"_TOTAL_RESULT_{full_name}.jpg"
+                    # Поиск всех файлов, которые соответствуют шаблону
+                    files = glob.glob(os.path.join(trimmed_path[:-1], f'*{file_part}'))
+                    
+                    for i in files:
+                        student_file = i
+                    email_sender(student_mail, subject, body, student_file)
+                else:
+                    print('Студент не найден')
+            
+        finally:
+            self.after(0, lambda: self.mails_sent_button.configure(state='normal'))
+
+
     def sub_generate_dicts(self):
         try:
             dict_quest = self.input_field_2.get()
@@ -350,7 +405,7 @@ class App(customtkinter.CTk):
                 else:
                     image_path = image_path_input + fr"{i}.jpg"
                 save_path = image_path.replace(".jpg","")
-                obj = Grading(image_path, save_path, answers, n_questions)
+                obj = Grading(image_path, save_path, answers, n_questions, students)
                 final_results = final_results | obj()
                 self.output_textbox.insert(tkinter.END, str(final_results) + "\n")
 

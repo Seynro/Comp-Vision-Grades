@@ -11,11 +11,12 @@ from dig_rec import numbers_recognition, number_after_type
 
 class Grading:
 
-    def __init__(self,image_path: str, save_path: str, answer_key, n_questions):
+    def __init__(self,image_path: str, save_path: str, answer_key, n_questions, students):
         self.image_path = image_path
         self.save_path = save_path
         self.answer_key = answer_key
         self.n_questions = n_questions
+        self.students = students
     
 
     def combine_images(self, top_image, middle_image, bottom_image, save_result):
@@ -79,8 +80,10 @@ class Grading:
         middle_image = cv2.imread(output_path)
         bottom_image = cv2.imread(self.image_path.replace(".jpg", "_TYPE_RESULT.jpg"))
 
-        # Укажем путь для сохранения результата
-        save_result = self.image_path.replace(".jpg", "_TOTAL_RESULT.jpg")
+        student = self.students[upper_type]
+        for key in student:
+            # Укажем путь для сохранения результата
+            save_result = self.image_path.replace(".jpg", f"_TOTAL_RESULT_{key}.jpg")
 
         # Вызовем функцию для объединения и сохранения
         self.combine_images(top_image, middle_image, bottom_image, save_result)
