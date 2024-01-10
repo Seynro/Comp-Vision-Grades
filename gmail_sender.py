@@ -32,7 +32,7 @@ def email_sender(email_receiver, subject, body, filename):
     # Добавляем заголовок к части вложения
     part.add_header(
         'Content-Disposition',
-        f'attachment; filename= Quiz.jpg',
+        f'attachment; filename= buble_sheet.jpg',
     )
 
     # Добавляем вложение к сообщению

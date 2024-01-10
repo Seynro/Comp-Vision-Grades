@@ -37,7 +37,7 @@ class TestGrader:
         if perimeter == 0:
             return False
         circularity = 4 * np.pi * (area / (perimeter * perimeter))
-        return circularity > 0.5
+        return circularity > 0.3
 
     def sort_bubbles(self, bubble_cnts):
         bubble_cnts_left = sorted([c for c in bubble_cnts if cv2.boundingRect(c)[0] < self.image.shape[1] / 2], key=lambda c: cv2.boundingRect(c)[1])
