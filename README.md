@@ -37,9 +37,9 @@
 4) Make exam/quiz
 5) Scan all tests
 6) Put in one folder (as jpgs)
-7) Type folder path in image_path and save_path (without 01.jpg) (If full path is like this C:\Users\user\Desktop\Stat\quiz_01_12_2023\business_stat_scans\file_01.jpg than path in programm should be C:\Users\user\Desktop\Stat\quiz_01_12_2023\business_stat_scans\file_)
-8) Input path to Questions dictionary
-9) Input name for the feature end Excel sheet (quiz_01_01_2023.xlsx) 
+7) Choose folder path in 'Choose image'
+8) Choose path to Questions dictionary
+9) Input name for the feature end Excel sheet (quiz_01_01_2023) 
 10) Input number of students (minimum 11)
 11) Input number of questions (maximum 40)
 12) Click Submit
