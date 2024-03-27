@@ -1,7 +1,7 @@
 # Comp-Vision-Grades
 
-<<<<<<< Updated upstream
-=======
+![image](https://github.com/Seynro/Comp-Vision-Grades/assets/105414210/68a9e255-cfa8-43d7-87a5-4713bb9b8d29)
+
 ### Programm starts with main_application.exe
 
 >>>>>>> Stashed changes
