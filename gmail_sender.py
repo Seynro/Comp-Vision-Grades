@@ -7,8 +7,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 def email_sender(email_receiver, subject, body, filename):
-    email_sender = 'ada.statistics@gmail.com'
-    email_password = 'hghw kdxb tytb gftk'
+    email_sender = 'YOUR EMAIL'
+    email_password = 'YOUR PATHWORD'
 
     # Создаем объект сообщения
     em = MIMEMultipart()
